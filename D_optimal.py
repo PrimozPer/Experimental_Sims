@@ -33,12 +33,12 @@ def model_matrix(X):
         b*d, b*j,
         d*j
         #three-way interactions can be added if needed
-        ,a*b*d, a*b*j, a*d*j, b*d*j,
+        # ,a*b*d, a*b*j, a*d*j, b*d*j,
         # four-way interaction
     ])
 
 
-def d_optimal_design(Phi, n_points, n_iter=300,pool_size=200):
+def d_optimal_design(Phi, n_points, n_iter=300,pool_size=400):
     n_candidates = Phi.shape[0]
     idx = np.random.choice(n_candidates, n_points, replace=False)
     X = Phi[idx]
@@ -58,7 +58,9 @@ def d_optimal_design(Phi, n_points, n_iter=300,pool_size=200):
                 X_new[i] = Phi[j]
 
 
-                det_new = np.linalg.det(X_new.T @ X_new)
+                sign, logdet = np.linalg.slogdet(X_new.T @ X_new)
+                det_new = np.exp(logdet) if sign > 0 else 0
+
 
                 if det_new > det_old:
                     idx[i] = j
@@ -191,7 +193,7 @@ Phi = model_matrix(Xc)
 
 ########RUnning D-optimal design selection##########
 
-np.random.seed(1)
+np.random.seed(np.random.randint(1e6))
 
 n_runs = 22   # total runs
 
