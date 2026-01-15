@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from itertools import product
 import matplotlib.pyplot as plt
-#add a progress bar
 from tqdm import tqdm
 
 
@@ -28,13 +27,13 @@ def model_matrix(X):
         #cubic
         a**3, b**3, d**3, j**3,
 
-        # interactions (important for powered trim)
+        # interactions 
         a*b, a*d, a*j,
         b*d, b*j,
         d*j
-        #three-way interactions can be added if needed
+        #three-way interactions 
         # ,a*b*d, a*b*j, a*d*j, b*d*j,
-        # four-way interaction
+      
     ])
 
 
@@ -168,8 +167,7 @@ beta_bounds  = [-5, 5]    # deg
 J_bounds = [1.2, 4]          # advance ratio
 
 
-
-# Discretise continuous variables
+#Create variable sets
 
 alpha_vals = np.linspace(*alpha_bounds, 19)
 beta_vals  = np.linspace(*beta_bounds, 11)
